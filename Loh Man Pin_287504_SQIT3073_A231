@@ -1,0 +1,133 @@
+#SQIT3073 BUSINESS ANALYTIC PROGRAMMING
+#INDIVIDUAL ASSIGNMENT 1
+#LOH MAN PIN 287504
+
+import os
+import math
+os.system('cls')
+
+loan=[]
+dsrThreshold=70
+
+def calLoan():
+    principalLA=float(input("Please enter the principal loan amount: RM "))
+    annualIR=float(input("Please enter the annual interest rate(in %): "))
+    loanT=int(input("Please enter the loan term(in years): "))
+    applicantMI=float(input("Please enter the applicant monthly income: RM "))
+    others=float(input("Please enter other monthly financial commitments: RM "))
+    print()
+
+    if (principalLA<=0) or (annualIR<=0) or (loanT<=0) or (applicantMI<=0) or (others<0):
+        print("Invalid input. Please reenter the values")
+    else:
+        monthlyInstalment=float(calMI(annualIR,loanT,principalLA))
+        totalPay=float(calTP(loanT,monthlyInstalment))
+        dsr=float(calDSR([monthlyInstalment,others],applicantMI))
+        
+        if (dsr<=dsrThreshold):
+            eligibility=str("Eligible to loan")           
+        else :
+            eligibility=str("Not Eligible to loan")
+        
+        Loan = {"principalLA": principalLA, 
+                "annualIR": annualIR,
+                "loanT": loanT,
+                "monthlyInstalment": monthlyInstalment,
+                "totalPay": totalPay,
+                "dsr": dsr,
+                "eligibility": eligibility
+                }
+
+        loan.append(Loan)
+        
+        print(f"Monthly Instalment: RM {monthlyInstalment:.2f}")
+        print(f"Total Payable: RM {totalPay:.2f}")
+        print(f"DSR: {dsr:.2f}%"+"- "+str(eligibility))
+
+        
+#Implement a function to calculate the monthly instalment for the housing loan.
+def calMI(annualIR,loanT,principalLA):
+    monthlyIR=float((annualIR/12)/100) # in percentage
+    numOfPay=int(loanT*12)
+    monthlyInstalment= float(principalLA * (monthlyIR * math.pow(1 + monthlyIR, numOfPay)) / (math.pow(1 + monthlyIR, numOfPay) - 1))
+    return monthlyInstalment
+
+#Implement a function to calculate the total amount payable over the term of the loan.
+def calTP(loanT,monthlyInstallment):
+    numOfPay=int(loanT*12)
+    totalPay=float(monthlyInstallment*numOfPay)
+    return totalPay
+
+#Implement a function to calculate the Debt Service Ratio (DSR) for the applicant.
+def calDSR(monthlyDC,monthlyIncome):
+    dsr=100*(sum(monthlyDC)/monthlyIncome)
+    return dsr
+
+#Display all previous loan calculations
+def displayAll():
+    if loan:
+        for i, Loan in enumerate(loan):
+            print(f"Loan Eligibility {i + 1}:")
+            print(f"Principal Loan Amount: RM{Loan["principalLA"]:.2f}")
+            print(f"Annual Interest Rate: {Loan["annualIR"]:.2f}%")
+            print(f"Loan Term: {Loan["loanT"]}")
+            print(f"Monthly Instalment: RM {Loan["monthlyInstalment"]:.2f}")
+            print(f"Total Payable: RM {Loan["totalPay"]:.2f}")
+            print(f"DSR: {Loan["dsr"]:.2f}% - {Loan["eligibility"]}")
+
+    else:
+        print("\nNo previous record.")
+
+#Allow the user to delete a previous calculation or modify the DSR threshold
+def modifyDSR():
+    global dsrThreshold
+    print(f"The current DSR threshold is {dsrThreshold}%")
+    newThreshold=float(input("Please enter new DSR threshold: "))
+    if newThreshold>0:
+        dsrThreshold=newThreshold
+        print(f"The DSR threshold has been updated to {dsrThreshold}%.")
+    else:
+        print("Invalid value. Please reenter.")
+
+def delLoan():
+    if loan:
+        displayAll()
+        i=int(input("\nPlease enter the record number to delete: "))
+        if 1 <= i <= len(loan):
+            del loan[i - 1]
+            print(f"Record {i} deleted successfully.")
+        else:
+            print(f"Record {i} is not exist.")
+        
+    else:
+        print("\nNo previous record.")
+
+#Include a menu system with options to calculate a new loan, display all previous loan calculations, and exit the program.
+def main():
+    choice=0
+    print("*******WELCOME TO LOAN CALCULATOR*******")
+    while choice!=5:
+        print("\n1. CALCULATE NEW LOAN")
+        print("2. DISPLAY ALL CALCULATION")
+        print("3. MODIFY DSR THRESHOLD")
+        print("4. DELETE PREVIOUS CALCULATION")
+        print("5. EXIT\n")
+
+        choice=int(input("PLEASE ENTER YOUR CHOICE: "))
+
+        if choice==1:
+            calLoan()
+        elif choice==2:
+            displayAll()
+        elif choice==3:
+            modifyDSR()
+        elif choice==4:
+            delLoan()
+        elif choice==5:
+            print("GOOD BYE")
+        else :
+            print("Invalid number, please reenter your choice.")
+
+# Run the main function
+if __name__ =="__main__":
+    main()    
