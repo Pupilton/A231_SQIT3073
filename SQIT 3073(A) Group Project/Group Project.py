@@ -111,7 +111,7 @@ statefig = go.FigureWidget()
 statefig.add_trace(go.Bar(x=df2["state"], y=df2["income_mean"], name="Income Mean (RM)"))
 statefig.add_trace(go.Bar(x=df2["state"], y=df2["expenditure_mean"], name="Expenditure Mean (RM)"))
 
-statefig.update_layout(title="Mean of Income and Expenditure of States in 2022")
+statefig.update_layout(title="Mean of Income and Expenditure of States in 2023")
 # design the app layout
 app.layout = html.Div(
     [
