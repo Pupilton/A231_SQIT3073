@@ -26,7 +26,7 @@ df1 = pd.read_csv('data.csv')
 df2 = pd.read_csv('hies_state.csv')
 
 # build the header component
-header = html.H1('Profit and Spending of Startup of a company')
+header = html.H1('Profit and Spending of MP company')
 
 
 # Component 1
@@ -71,13 +71,13 @@ forecast = model.predict(forecast_years.reshape(-1, 1))
 
 spendingfig.add_scatter(name="Marketing Spend Forecast", x=forecast_years, y=forecast)
 
-spendingfig.update_layout(title="Spending of Each Department of company in Years")
+spendingfig.update_layout(title="Spending of Each Department of MP company in Years")
 
 
 #Component 2
 profitfig = go.FigureWidget()
-profitfig.add_scatter(name="Profit of company", x=df1["Year"], y=df1["Profit"])
-profitfig.add_scatter(name="Sales of company(pieces)", x=df1["Year"], y=df1["Sales (pieces)"])
+profitfig.add_scatter(name="Profit of MP company", x=df1["Year"], y=df1["Profit"])
+profitfig.add_scatter(name="Sales of MP company(pieces)", x=df1["Year"], y=df1["Sales (pieces)"])
 
 # Time series forecasting using Linear Regression for "Profit" column
 X = df1[["Year"]].values
@@ -89,7 +89,7 @@ model.fit(X, y)
 forecast_years = np.arange(df1["Year"].max() , df1["Year"].max() + 12)
 forecast = model.predict(forecast_years.reshape(-1, 1))
 
-profitfig.add_scatter(name="Profit of company Forecast", x=forecast_years, y=forecast)
+profitfig.add_scatter(name="Profit of MP company Forecast", x=forecast_years, y=forecast)
 
 # Time series forecasting using Linear Regression for "Sales (pieces)" column
 X = df1[["Year"]].values
@@ -101,9 +101,9 @@ model.fit(X, y)
 forecast_years = np.arange(df1["Year"].max() , df1["Year"].max() + 12)
 forecast = model.predict(forecast_years.reshape(-1, 1))
 
-profitfig.add_scatter(name="Sales of company(pieces) Forecast", x=forecast_years, y=forecast)
+profitfig.add_scatter(name="Sales of MP company(pieces) Forecast", x=forecast_years, y=forecast)
 
-profitfig.update_layout(title="Profit and Sales of the company in Years")
+profitfig.update_layout(title="Profit and Sales of the MP company in Years")
 
 
 #Component 3
